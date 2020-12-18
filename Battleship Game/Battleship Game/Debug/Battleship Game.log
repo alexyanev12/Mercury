@@ -1,0 +1,4 @@
+﻿  Battleship Game.cpp
+D:\Repositories\Mercury\Battleship Game\Battleship Game\Battleship Game.cpp(6,12): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
+D:\Repositories\Mercury\Battleship Game\Battleship Game\Battleship Game.cpp(8,21): warning C4101: 'guess': unreferenced local variable
+  Battleship Game.vcxproj -> D:\Repositories\Mercury\Battleship Game\Debug\Battleship Game.exe
