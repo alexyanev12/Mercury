@@ -55,8 +55,8 @@ int guess(int* battleship)
 
 int main()
 {
-	srand(time(NULL));
-	int choice = -2, record = 15, lastPlay, wins = 0, loses = 0;
+	srand(time(NULL)); //seed for Random Number Generator
+	int choice = -2, record = 15, lastPlay = 15, wins = 0, loses = 0;
 	int battleship[4];
 	do
 	{
@@ -105,7 +105,7 @@ int main()
 		}
 		case 3: //outputs the best play
 		{
-			if (record > 14)
+			if (record > 13)
 			{
 				cout << "There haven't been any wins.";
 			}
@@ -117,7 +117,7 @@ int main()
 		}
 		case 4: //outputs the last play
 		{
-			if (lastPlay > 14)
+			if (lastPlay > 13)
 			{
 				cout << "The enemy has won, you didn't guess it right in 13 tries.";
 			}
