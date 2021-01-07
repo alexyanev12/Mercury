@@ -4,7 +4,7 @@ using namespace std;
 
 int guess(int* battleship)
 {
-	int guess[4], positions = 0, numbers = 0, tries = -1;
+	int guess[4], positions = 0, numbers = 0, tries = 14;
 	for (int i = 1; i <= 13; i++) //the 13 tries the player gets
 	{
 		cout << "Guess the ship's 4 digits (must be from 0 to 7)" << endl;
@@ -15,23 +15,20 @@ int guess(int* battleship)
 			{
 				cin.clear();
 				cin.ignore(numeric_limits<streamsize>::max(), '\n');
-				cout << "Invalid input" << endl;
+				cout << "Invalid input, please enter another number." << endl;
 				j--;
 			}
-			else //counts the correct numbers and positions
+		}
+		for (int ix = 0; ix < 4; ix++) //searches for correct numbers and positions
+		{
+			for (int jx = 0; jx < 4; jx++)
 			{
-				for (int ix = 0; ix < 4; i++)
+				if (battleship[ix] == guess[jx])
 				{
-					for (int jx = 0; jx < 4; j++)
+					numbers++;
+					if (ix == jx)
 					{
-						if (battleship[ix] == guess[jx])
-						{
-							numbers++;
-							if (ix == jx)
-							{
-								positions++;
-							}
-						}
+						positions++;
 					}
 				}
 			}
@@ -46,6 +43,12 @@ int guess(int* battleship)
 		else //if the guess isn't fully correct
 		{
 			cout << numbers << " digits and " << positions << " of their positions are correct." << endl;
+			cout << "Previous guess: ";
+			for (int j = 0; j < 4; j++)
+			{
+				cout << guess[j] << " ";
+			}
+			cout << endl;
 		}
 		positions = 0; //reseting values so the code doesn't break
 		numbers = 0;
@@ -56,15 +59,16 @@ int guess(int* battleship)
 int main()
 {
 	srand(time(NULL)); //seed for Random Number Generator
-	int choice = -2, record = 15, lastPlay = 15, wins = 0, loses = 0;
-	int battleship[4];
+	int choice = -2, record = 14, lastPlay = 14, wins = 0, loses = 0;
+	int battleship[4] = { 1, 2, 3, 4 };
 	do
 	{
 		cout << "Player vs Player (1)" << endl;
 		cout << "Player vs Computer (2)" << endl;
 		cout << "Current Best Play (3)" << endl; //outputs the best play
 		cout << "Last Play results (4)" << endl; //outputs the last play
-		cout << "Credits (5)" << endl; //outputs credits (I want someone else to deal with this, please.)
+		cout << "Wins and loses (5)" << endl; //outputs the amount of wins and loses
+		cout << "Credits (6)" << endl; //outputs credits (I want someone else to deal with this, please.)
 		cout << "Quit (0)" << endl; //breaks the loop and exits
 		cin >> choice;
 		system("CLS");
@@ -86,7 +90,7 @@ int main()
 				{
 					cin.clear();
 					cin.ignore(numeric_limits<streamsize>::max(), '\n');
-					cout << "Invalid input" << endl;
+					cout << "Invalid input, please enter another number." << endl;
 					i--;
 				}
 			}
@@ -107,7 +111,7 @@ int main()
 		{
 			if (record > 13)
 			{
-				cout << "There haven't been any wins.";
+				cout << "There haven't been any wins." << endl;
 			}
 			else
 			{
@@ -117,19 +121,31 @@ int main()
 		}
 		case 4: //outputs the last play
 		{
-			if (lastPlay > 13)
+			if (wins > 0 or loses > 0)
 			{
-				cout << "The enemy has won, you didn't guess it right in 13 tries.";
+				if (lastPlay > 13)
+				{
+					cout << "The enemy has won, you didn't guess it right in 13 tries." << endl;
+				}
+				else
+				{
+					cout << "You won last round in " << lastPlay << " tries!" << endl;
+				}
 			}
 			else
 			{
-				cout << "You won last round in " << lastPlay << " tries!";
+				cout << "There haven't been any plays." << endl;
 			}
 			break;
 		}
-		case 5: //outputs credits (I want someone else to deal with this, please.)
+		case 5: //outputs the amount of wins and loses
 		{
-
+			cout << "You have " << wins << " wins and " << loses << " loses." << endl;
+			break;
+		}
+		case 6:
+		{
+			break;
 		}
 		case 0: break;
 		default: choice = -1;
@@ -138,7 +154,7 @@ int main()
 		{ 
 			cout << "Invalid input" << endl; 
 		}
-		else
+		if (choice == 1 or choice == 2)
 		{
 			if (record > lastPlay)
 			{
