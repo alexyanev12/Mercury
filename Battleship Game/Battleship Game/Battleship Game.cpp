@@ -1,8 +1,7 @@
-// ConsoleApplication85.cpp : This file contains the 'main' function. Program execution begins and ends there.
-//
 #include <iostream>
 #include <time.h>
 using namespace std;
+
 int guess(int* battleship)
 {
 	int guess[4], positions = 0, numbers = 0, tries = 14;
@@ -62,6 +61,7 @@ int guess(int* battleship)
 	}
 	return tries; //returning the amount of tries it took to guess
 }
+
 void Tutorial()
 {
 	char a;
@@ -85,7 +85,6 @@ k:
 	}
 	else if (a == 'n')
 	{
-		cout << "Oh really?! That's great! Let's begin then....." << endl;
 	}
 	else
 	{
@@ -94,9 +93,47 @@ k:
 	}
 	cout << "Press ENTER to continue\n";
 }
+
 void Exit()
 {
 	cout << "I hope you enjoyed out little game";
+}
+
+int* bsCoord(int* battleship) //a player enters the battleship's coordinates
+{   
+	int sameNumber = 0;
+	do
+	{
+		sameNumber = 0;
+		cout << "Enter the 4 ship digits (must be from 0 to 7, can't use a single number more than once)" << endl;
+		for (int i = 0; i < 4; i++)
+		{
+			cin >> battleship[i];
+			if (cin.fail() or battleship[i] < 0 or battleship[i] > 7)
+			{
+				cin.clear();
+				cin.ignore(numeric_limits<streamsize>::max(), '\n');
+				cout << "Oops! One or more numbers you have entered are not in range?! Maybe try something between 0 and 7?" << endl;
+				i--;
+			}
+		}
+		for (int i = 0; i < 4; i++) //makes sure there are no duplicate numbers
+		{
+			for (int j = 0; j < 4; j++)
+			{
+				if (battleship[i] == battleship[j])
+				{
+					sameNumber++;
+				}
+			}
+		}
+		if (sameNumber > 4)
+		{
+			system("CLS");
+			cout << "You can't use the same number twice!" << endl;
+		}
+	} while (sameNumber > 4);
+	return battleship;
 }
 
 int main()
@@ -107,7 +144,7 @@ int main()
 	cout << "That's great! Let's begin." << endl;
 	srand(time(NULL)); //seed for Random Number Generator
 	int choice = -2, record = 14, lastPlay = 14, wins = 0, loses = 0;
-	int battleship[4] = { 1, 2, 3, 4 };
+	int battleship[4];
 	do
 	{
 		cout << "Player vs Player (1)" << endl;
@@ -130,18 +167,7 @@ int main()
 		{
 		case 1: //if the enemy is a player
 		{
-			cout << "Enter the 4 ship digits (must be from 0 to 7)" << endl;
-			for (int i = 0; i < 4; i++)
-			{
-				cin >> battleship[i];
-				if (cin.fail() or battleship[i] < 0 or battleship[i] > 7)
-				{
-					cin.clear();
-					cin.ignore(numeric_limits<streamsize>::max(), '\n');
-					cout << "Oops! One or more numbers you have entered are not in range?! Maybe try something between 0 and 7?" << endl;
-					i--;
-				}
-			}
+			bsCoord(battleship);
 			system("CLS");
 			lastPlay = guess(battleship);
 			break;
@@ -151,6 +177,13 @@ int main()
 			for (int i = 0; i < 4; i++) //picks random digits for the ship
 			{
 				battleship[i] = rand() % 8;
+				for (int j = 0; j < i; j++)
+				{
+					if (battleship[i] == battleship[j]) //makes sure there are no duplicate numbers
+					{
+						i--;
+					}
+				}
 			}
 			lastPlay = guess(battleship);
 			break;
@@ -222,13 +255,3 @@ int main()
 	} while (choice != 0);
 	Exit();
 }
-// Run program: Ctrl + F5 or Debug > Start Without Debugging menu
-// Debug program: F5 or Debug > Start Debugging menu
-
-// Tips for Getting Started: 
-//   1. Use the Solution Explorer window to add/manage files
-//   2. Use the Team Explorer window to connect to source control
-//   3. Use the Output window to see build output and other messages
-//   4. Use the Error List window to view errors
-//   5. Go to Project > Add New Item to create new code files, or Project > Add Existing Item to add existing code files to the project
-//   6. In the future, to open this project again, go to File > Open > Project and select the .sln file
