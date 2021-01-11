@@ -2,23 +2,45 @@
 #include <time.h>
 using namespace std;
 
-int guess(int* battleship)
+int* playerInput(int* coord) //used for entering ship coordinates
 {
-	int guess[4], positions = 0, numbers = 0, tries = 14;
-	for (int i = 1; i <= 13; i++) //the 13 tries the player gets
+	for (int i = 0; i < 4; i++)
 	{
-		cout << "Guess the ship's coordinates 4 digits (must be from 0 to 7)" << endl;
-		for (int j = 0; j < 4; j++) //the 4 digits the player guesses
+		cin >> coord[i];
+		if (cin.fail() or coord[i] < 0 or coord[i] > 7)
 		{
-			cin >> guess[j];
-			if (cin.fail() or guess[j] < 0 or guess[j] > 7) //if the input is incorrect
+			cin.clear();
+			cin.ignore(numeric_limits<streamsize>::max(), '\n');
+			cout << "Oops! One or more numbers you have entered are not in range?! Maybe try something between 0 and 7?" << endl;
+			i--;
+		}
+	}
+	return coord;
+}
+
+int dupCheck(int* x) //checks for duplicate elements
+{
+	int sameNumber = 0;
+	for (int i = 0; i < 4; i++) //makes sure there are no duplicate numbers
+	{
+		for (int j = 0; j < 4; j++)
+		{
+			if (x[i] == x[j])
 			{
-				cin.clear();
-				cin.ignore(numeric_limits<streamsize>::max(), '\n');
-				cout << "Oops! The number you have entered is not in range :( Maybe try something between 0 and 7?" << endl;
-				j--;
+				sameNumber++;
 			}
 		}
+	}
+	return sameNumber;
+}
+
+int guess(int* battleship)
+{
+	int guess[4], positions = 0, numbers = 0, tries = 14, sameNumber = 0;
+	for (int i = 1; i <= 13; i++) //the 13 tries the player gets
+	{
+		cout << "Guess the ship's coordinates 4 digits (must be from 0 to 7, no repeating digits)" << endl;
+		playerInput(guess); //takes the player's guess
 		for (int ix = 0; ix < 4; ix++) //searches for correct numbers and positions
 		{
 			for (int jx = 0; jx < 4; jx++)
@@ -34,27 +56,36 @@ int guess(int* battleship)
 			}
 		}
 
-		if (positions == 4 and numbers == 4) //if the guess is fully correct
+		sameNumber = dupCheck(guess);
+		if (sameNumber > 4)
 		{
-			cout << "Congratulations, you have guessed all digits and their positions correctly!" << endl;
-			tries = i;
-			i = 14;
+			cout << "There has been an error..? You have entered the same number twice?! Please try not to do it again! OK?" << endl;
+			i--;
 		}
-		else //if the guess isn't fully correct
+		else
 		{
-			cout << "----------------------------------------------------------" << endl;
-			cout << "||   Guessed    ||   ||   Player    ||   ||   Guessed   ||" << endl;
-			cout << "||   Position   ||   ||   Guesses   ||   ||   numbers   ||" << endl;
-			cout << "||   & numbers  ||   ||             ||   ||             ||" << endl;
-			cout << "----------------------------------------------------------" << endl;
-			cout << "||       " << positions << "      ||   ||   ";
-			for (int j = 0; j < 4; j++)
+			if (positions == 4 and numbers == 4) //if the guess is fully correct
 			{
-				cout << guess[j] << " ";
+				cout << "Congratulations, you have guessed all digits and their positions correctly!" << endl;
+				tries = i;
+				i = 14;
 			}
-			cout << "  ||   ||      " << numbers << "      ||" << endl;
-			cout << "----------------------------------------------------------" << endl;
-			cout << endl;
+			else //if the guess isn't fully correct
+			{
+				cout << "----------------------------------------------------------" << endl;
+				cout << "||   Guessed    ||   ||   Player    ||   ||   Guessed   ||" << endl;
+				cout << "||   Position   ||   ||   Guesses   ||   ||   numbers   ||" << endl;
+				cout << "||   & numbers  ||   ||             ||   ||             ||" << endl;
+				cout << "----------------------------------------------------------" << endl;
+				cout << "||       " << positions << "      ||   ||   ";
+				for (int j = 0; j < 4; j++)
+				{
+					cout << guess[j] << " ";
+				}
+				cout << "  ||   ||      " << numbers << "      ||" << endl;
+				cout << "----------------------------------------------------------" << endl;
+				cout << endl;
+			}
 		}
 		positions = 0; //reseting values so the code doesn't break
 		numbers = 0;
@@ -98,34 +129,15 @@ void Exit()
 	cout << "I hope you enjoyed out little game";
 }
 
-int* bsCoord(int* battleship) //a player enters the battleship's coordinates
+int* shipCoord(int* battleship) //a player enters the battleship's coordinates
 {
 	int sameNumber = 0;
 	do
 	{
 		sameNumber = 0;
 		cout << "Enter the 4 ship digits (must be from 0 to 7, can't use a single number more than once)" << endl;
-		for (int i = 0; i < 4; i++)
-		{
-			cin >> battleship[i];
-			if (cin.fail() or battleship[i] < 0 or battleship[i] > 7)
-			{
-				cin.clear();
-				cin.ignore(numeric_limits<streamsize>::max(), '\n');
-				cout << "Oops! One or more numbers you have entered are not in range?! Maybe try something between 0 and 7?" << endl;
-				i--;
-			}
-		}
-		for (int i = 0; i < 4; i++) //makes sure there are no duplicate numbers
-		{
-			for (int j = 0; j < 4; j++)
-			{
-				if (battleship[i] == battleship[j])
-				{
-					sameNumber++;
-				}
-			}
-		}
+		playerInput(battleship);
+		sameNumber = dupCheck(battleship);
 		if (sameNumber > 4)
 		{
 			system("CLS");
@@ -134,6 +146,7 @@ int* bsCoord(int* battleship) //a player enters the battleship's coordinates
 	} while (sameNumber > 4);
 	return battleship;
 }
+
 void credits()
 {
 	cout << "Hello, soldier! I see you are interested in the developers of our game!" << endl;
@@ -179,7 +192,7 @@ int main()
 		{
 		case 1: //if the enemy is a player
 		{
-			bsCoord(battleship);
+			shipCoord(battleship);
 			system("CLS");
 			lastPlay = guess(battleship);
 			break;
