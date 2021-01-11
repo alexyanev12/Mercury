@@ -62,7 +62,7 @@ int guess(int* battleship)
 	return tries; //returning the amount of tries it took to guess
 }
 
-void Tutorial()
+void tutorial()
 {
 	char a;
 	cout << "Hello, this is our take on the Battleship game named \"Bletchley\"" << endl;
@@ -81,17 +81,16 @@ k:
 		cout << "Ou yeah and DON'T CHEAT! !#%&* (It's not fun) \n\n";
 		cout << "Got it?\n";
 		cout << "----------------------------------------------------------------\n";
-		cin.ignore();
+		system("PAUSE");
 	}
 	else if (a == 'n')
 	{
 	}
 	else
 	{
-		cout << "----------------------------------------------------------------\n";
+		system("CLS");
 		cout << "Oops, you have entered something wrong!? You know you have to enter just the sybol \'y\' or the symbol \'n\', right?" << endl; goto k;
 	}
-	cout << "Press ENTER to continue\n";
 }
 
 void Exit()
@@ -100,7 +99,7 @@ void Exit()
 }
 
 int* bsCoord(int* battleship) //a player enters the battleship's coordinates
-{   
+{
 	int sameNumber = 0;
 	do
 	{
@@ -130,16 +129,29 @@ int* bsCoord(int* battleship) //a player enters the battleship's coordinates
 		if (sameNumber > 4)
 		{
 			system("CLS");
-			cout << "You can't use the same number twice!" << endl;
+			cout << "There has been an error..? You have entered the same number twice?! Please try not to do it again! OK?" << endl;
 		}
 	} while (sameNumber > 4);
 	return battleship;
 }
+void credits()
+{
+	cout << "Hello, soldier! I see you are interested in the developers of our game!" << endl;
+	cout << "Well, I am quite amused!" << endl;
+	cout << "Here is our team:\n" << endl;
+	cout << "Scrum master:  Alexander Yanev / AZYanev18@codingburgas.bg " << endl;
+	cout << "Frontend developer: Stefan Stratev / sdstratev18@codingburgas.bg " << endl;
+	cout << "Backend developer: Teodor Angelov / ttangelov18@codingburgas.bg" << endl;
+	cout << "QA Engineer: Yavor Karakolev / YAKarakolev18@codingburgas.bg " << endl;
+	cout << "Documentation: Nevena Pavlova / NSPavlova18@codingburgas.bg " << endl;
+	cout << "Code checker: Kaloyan Dimov / KDDimov18@codingburgas.bg\n\n " << endl;
+	system("PAUSE");
+	system("CLS");
+}
 
 int main()
 {
-	Tutorial();
-	cin.ignore();
+	tutorial();
 	system("CLS");
 	cout << "That's great! Let's begin." << endl;
 	srand(time(NULL)); //seed for Random Number Generator
@@ -226,6 +238,7 @@ int main()
 		}
 		case 6:
 		{
+			credits();
 			break;
 		}
 		case 0: break;
