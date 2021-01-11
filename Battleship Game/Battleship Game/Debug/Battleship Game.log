@@ -1,3 +1,3 @@
 ﻿  Battleship Game.cpp
-D:\Repositories\Mercury\Battleship Game\Battleship Game\Battleship Game.cpp(171,12): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
+D:\Repositories\Mercury\Battleship Game\Battleship Game\Battleship Game.cpp(156,12): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
   Battleship Game.vcxproj -> D:\Repositories\Mercury\Battleship Game\Debug\Battleship Game.exe
